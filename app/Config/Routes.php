@@ -38,6 +38,10 @@ $routes->get('/nif', 'NifController::index');
 $routes->post('/signup', 'UserController::signup');
 $routes->post('/signin', 'UserController::signin');
 
+
+// route de l'impot
+$routes->post('/creerImpot', 'ImpotController::creerImpot');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
