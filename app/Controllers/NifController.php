@@ -13,10 +13,10 @@ class NifController extends ResourceController
      */
     public function index()
     {
-        //
+        // 
         return view('recette/index');
     }
-
+    
     /**
      * Return the properties of a resource object
      *

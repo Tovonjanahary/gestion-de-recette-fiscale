@@ -34,6 +34,10 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'Home::index');
 $routes->get('/nif', 'NifController::index');
 
+// route des utilisateurs
+$routes->post('/signup', 'UserController::signup');
+$routes->post('/signin', 'UserController::signin');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
