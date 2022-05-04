@@ -58,27 +58,27 @@ class NifController extends ResourceController
     {
         // ajouter un nif
         $rules = [
-            'rais-com' => 'required',
-            'nom-com' => 'required',
+            'raisCom' => 'required',
+            'nomCom' => 'required',
             'adresse' => 'required',
             'activite' => 'required',
             'capital' => 'required',
             'telephone' => 'required',
-            'date-exer' => 'required',
-            'debut-exer' => 'required',
-            'fin-exer' => 'required',
+            'dateExer' => 'required',
+            'debutExer' => 'required',
+            'finExer' => 'required',
         ];
 
         $data = [
-            'rais-com' => $this->request->getVar('rais-com'),
-            'nom-com' => $this->request->getVar('nom-com'),
+            'raisCom' => $this->request->getVar('raisCom'),
+            'nomCom' => $this->request->getVar('nomCom'),
             'adresse' => $this->request->getVar('adresse'),
             'activite' => $this->request->getVar('activite'),
             'capital' => $this->request->getVar('capital'),
             'telephone' => $this->request->getVar('telephone'),
-            'date-exer' => $this->request->getVar('date-exer'),
-            'debut-exer' => $this->request->getVar('debut-exer'),
-            'fin-exer' => $this->request->getVar('fin-exer'),
+            'datExer' => $this->request->getVar('datExer'),
+            'debutExer' => $this->request->getVar('debutExer'),
+            'finExer' => $this->request->getVar('finExer'),
         ];
 
         $validation = \Config\Services::validation();
@@ -113,9 +113,59 @@ class NifController extends ResourceController
      *
      * @return mixed
      */
-    public function edit($id = null)
+    public function modifierNif($id = null)
     {
-        //
+        // mofifier le nif
+
+        $rules = [
+            'raisCom' => 'required',
+            'nomCom' => 'required',
+            'adresse' => 'required',
+            'activite' => 'required',
+            'capital' => 'required',
+            'telephone' => 'required',
+            'dateExer' => 'required',
+            'debutExer' => 'required',
+            'finExer' => 'required',
+        ];
+
+        $data = [
+            'raisCom' => $this->request->getVar('raisCom'),
+            'nomCom' => $this->request->getVar('nomCom'),
+            'adresse' => $this->request->getVar('adresse'),
+            'activite' => $this->request->getVar('activite'),
+            'capital' => $this->request->getVar('capital'),
+            'telephone' => $this->request->getVar('telephone'),
+            'datExer' => $this->request->getVar('datExer'),
+            'debutExer' => $this->request->getVar('debutExer'),
+            'finExer' => $this->request->getVar('finExer'),
+        ];
+
+        $validation = \Config\Services::validation();
+        if(!$this->validate($rules)) {
+            $response = [
+                'status'=> 400,
+                'message'=> [
+                    'error'=> "les champs du formulaire sont obligatoires",
+                ],
+            ];
+            return $this->respond($response);
+
+        } else { 
+            $NifModel = new NifModel();
+            $NifModel->where([
+                "num_nif"=> $id
+            ])->set($data)->update();
+            
+            $response = [
+                'status'=> 201,
+                'error'=> null,
+                'messages'=> [
+                    'success'=> "modifier avec succes !"
+                ]
+            ];
+            return $this->respond($response);
+        }
     }
 
     /**
