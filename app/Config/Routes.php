@@ -40,6 +40,8 @@ $routes->post('/signin', 'UserController::signin');
 
 
 // route de l'impot
+$routes->get('/afficherImpot', 'ImpotController::index');
+$routes->get('/afficherUnImpot/(:num)', 'ImpotController::afficherUnImpot/$1');
 $routes->post('/creerImpot', 'ImpotController::creerImpot');
 
 // route de NIF

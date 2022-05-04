@@ -17,7 +17,12 @@ class ImpotController extends ResourceController
 
     public function index()
     {
-        //
+        // affichage de l'impot
+        if($this->request->getMethod() == 'get') {
+            $ImpotModel = new ImpotModel();
+            $data = $ImpotModel->findAll();
+            return $this->respond($data);
+        }
     }
 
     /**
@@ -25,9 +30,13 @@ class ImpotController extends ResourceController
      *
      * @return mixed
      */
-    public function show($id = null)
+    public function afficherUnImpot($id = null)
     {
-        //
+        // afficher un impot
+        $ImpotModel = new ImpotModel();
+        $data = $ImpotModel->find(['num_impot'=> $id]);
+        if(!$data) return $this->FailNotFound("donnee introuvable");
+        return $this->respond($data[0]);
     }
 
     /**
