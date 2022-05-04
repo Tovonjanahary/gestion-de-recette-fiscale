@@ -42,6 +42,11 @@ $routes->post('/signin', 'UserController::signin');
 // route de l'impot
 $routes->post('/creerImpot', 'ImpotController::creerImpot');
 
+// route de NIF
+$routes->post('/ajouterNif', 'NifController::ajouterNif');
+
+// route de saisie
+$routes->post('/faireSaisie', 'SaisieController::faireSaisie');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

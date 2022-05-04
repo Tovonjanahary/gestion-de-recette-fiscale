@@ -3,24 +3,21 @@
 namespace App\Controllers;
 
 use CodeIgniter\API\ResponseTrait;
-use App\Models\NifModel;
+use App\Models\SaisieModel;
 use CodeIgniter\RESTful\ResourceController;
 
-class NifController extends ResourceController
+class SaisieController extends ResourceController
 {
     /**
      * Return an array of resource objects, themselves in array format
      *
      * @return mixed
      */
-    use ResponseTrait;
-
     public function index()
     {
-        // 
-        return view('recette/index');
+        //
     }
-    
+
     /**
      * Return the properties of a resource object
      *
@@ -46,34 +43,38 @@ class NifController extends ResourceController
      *
      * @return mixed
      */
-    public function ajouterNif()
+    public function faireSaisie()
     {
-        // ajouter un nif
+        // faire du saisie
+
         $rules = [
-            'rais-com' => 'required',
-            'nom-com' => 'required',
-            'adresse' => 'required',
-            'activite' => 'required',
-            'capital' => 'required',
-            'telephone' => 'required',
-            'date-exer' => 'required',
-            'debut-exer' => 'required',
-            'fin-exer' => 'required',
+            'date' => 'required',
+            'num_impot' => 'required',
+            'num_nif' => 'required',
+            'chiffreAff' => 'required',
+            'montPay' => 'required',
+            'montVers' => 'required',
+            'reste' => 'required',
+            'modeP' => 'required',
+            'banque' => 'required',
+            'bordereau' => 'required',
         ];
 
         $data = [
-            'rais-com' => $this->request->getVar('rais-com'),
-            'nom-com' => $this->request->getVar('nom-com'),
-            'adresse' => $this->request->getVar('adresse'),
-            'activite' => $this->request->getVar('activite'),
-            'capital' => $this->request->getVar('capital'),
-            'telephone' => $this->request->getVar('telephone'),
-            'date-exer' => $this->request->getVar('date-exer'),
-            'debut-exer' => $this->request->getVar('debut-exer'),
-            'fin-exer' => $this->request->getVar('fin-exer'),
+            'date' => $this->request->getVar('date'),
+            'num_impot' => $this->request->getVar('num_impot'),
+            'num_nif' => $this->request->getVar('num_nif'),
+            'chiffreAff' => $this->request->getVar('chiffreAff'),
+            'montPay' => $this->request->getVar('montPay'),
+            'montVers' => $this->request->getVar('montVers'),
+            'reste' => $this->request->getVar('reste'),
+            'modeP' => $this->request->getVar('modeP'),
+            'banque' => $this->request->getVar('banque'),
+            'bordereau' => $this->request->getVar('bordereau'),
         ];
 
         $validation = \Config\Services::validation();
+
         if(!$this->validate($rules)) {
             $response = [
                 'status'=> 400,
@@ -82,21 +83,9 @@ class NifController extends ResourceController
                 ],
             ];
             return $this->respond($response);
-
         } else {
-
-            $NifModel = new NifModel();
-            $NifModel->insert($data);
-
-            $response = [
-                'status'=> 201,
-                'error'=> null,
-                'messages'=> [
-                    'success'=> "enregistrer avec succes !"
-                ]
-            ];
-
-            return $this->respondCreated($response);
+            $saisieModel = new SaisieModel();
+            $saisieModel->insert($data);
         }
     }
 
@@ -112,7 +101,7 @@ class NifController extends ResourceController
 
     /**
      * Add or update a model resource, from "posted" properties
-     *
+     * 
      * @return mixed
      */
     public function update($id = null)
