@@ -18,7 +18,11 @@ class NifController extends ResourceController
     public function index()
     {
         // 
-        return view('recette/index');
+        if($this->request->getMethod() == 'get') {
+            $NifModel = new NifModel();
+            $data = $NifModel->findAll();
+            return $this->respond($data);
+        }
     }
     
     /**
@@ -26,9 +30,13 @@ class NifController extends ResourceController
      *
      * @return mixed
      */
-    public function show($id = null)
+    public function afficher_simple_nif($id = null)
     {
-        //
+        // afficher un nif
+        $NifModel = new NifModel();
+        $data = $NifModel->find(['num_nif'=> $id]);
+        if(!$data) return $this->FailNotFound("donnee introuvable");
+        return $this->respond($data[0]);
     }
 
     /**
@@ -125,8 +133,25 @@ class NifController extends ResourceController
      *
      * @return mixed
      */
-    public function delete($id = null)
+    public function supprimerNif($id = null)
     {
-        //
+        // supprimer un nif
+        $model = new NifModel();
+        $data = $model->find(['num_nif'=> $id]);
+        if(!$data) {
+            return $this->FailNotFound("donnee introuvable");
+        } else {
+            $model->delete($id);
+
+            $response = [
+                'status'=> 200,
+                'error'=> null,
+                'messages'=> [
+                    'success'=> "supprimee avec succes"
+                ]
+            ];
+            
+            return $this->respond($response);
+        }      
     }
 }

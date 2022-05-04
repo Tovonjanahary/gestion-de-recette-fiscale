@@ -44,6 +44,9 @@ $routes->post('/creerImpot', 'ImpotController::creerImpot');
 
 // route de NIF
 $routes->post('/ajouterNif', 'NifController::ajouterNif');
+$routes->get('/afficherNif', 'NifController::index');
+$routes->get('/afficherNif/(:num)', 'NifController::afficher_simple_nif/$1');
+$routes->delete('/supprimerNif/(:num)', 'NifController::supprimerNif/$1');
 
 // route de saisie
 $routes->post('/faireSaisie', 'SaisieController::faireSaisie');
