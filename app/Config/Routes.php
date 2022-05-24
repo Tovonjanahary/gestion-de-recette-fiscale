@@ -53,6 +53,7 @@ $routes->put('/modifierNif/(:num)', 'NifController::modifierNif/$1');
 
 // route de saisie
 $routes->post('/faireSaisie', 'SaisieController::faireSaisie');
+$routes->get('/afficherSaisie/(:num)', 'SaisieController::afficherUnSaisie/$1');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

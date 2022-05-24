@@ -13,9 +13,18 @@ class SaisieController extends ResourceController
      *
      * @return mixed
      */
-    public function index()
+    public function __construct(){
+        $this->db = \Config\Database::connect();
+    }
+
+    public function afficherSaisie()
     {
         //
+        if($this->request->getMethod() == 'get') {
+            $model = new SaisieModel();
+            $data = $model->findAll();
+            return $this->respond($data);
+        }
     }
 
     /**
@@ -23,9 +32,12 @@ class SaisieController extends ResourceController
      *
      * @return mixed
      */
-    public function show($id = null)
+    public function afficherUnSaisie($id = null)
     {
-        //
+        //raw query
+        $query = "SELECT impot.code_recepice, impot.num_impot, impot.périodicité, nif.num_nif, nif.raisCom, nif.nomCom, nif.adresse, saisie.date, saisie.chiffreAff, saisie.montPay, saisie.montVers, saisie.reste, saisie.modeP, saisie.bordereau, saisie.banque FROM saisie INNER JOIN impot ON impot.num_impot=saisie.num_impot INNER JOIN nif ON nif.num_nif=saisie.num_nif where id_saisie='$id'";
+        $data = $this->db->query($query)->getResult('array');
+        return $this->respond($data);
     }
 
     /**
@@ -78,14 +90,26 @@ class SaisieController extends ResourceController
         if(!$this->validate($rules)) {
             $response = [
                 'status'=> 400,
-                'message'=> [
+                'messages'=> [
                     'error'=> "les champs du formulaire sont obligatoires",
                 ],
             ];
             return $this->respond($response);
         } else {
             $saisieModel = new SaisieModel();
-            $saisieModel->insert($data);
+            $hr = $saisieModel->insert($data);
+            $result = $saisieModel->find(['id_saisie'=>$hr]);
+
+            $response = [
+                'status'=> 201,
+                'error'=> null,
+                'messages'=> [
+                    'success'=> "enregistrer avec succes !"
+                ],
+                'data' => $result[0]
+            ];
+
+            return $this->respondCreated($response);
         }
     }
 

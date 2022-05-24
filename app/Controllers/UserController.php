@@ -122,33 +122,14 @@ class UserController extends ResourceController
         $userModel = new UserModel();
 
         if(!$this->validate($rules)) {
-            $response = [
-                'status'=> 400,
-                'message'=> [
-                    'error'=> "les champs du formulaire sont obligatoires",
-                ],
-            ];
-
-            $response = [
-                'status'=> 400,
-                'message'=> [
-                    'error'=> "les champs du formulaire sont obligatoires",
-                ],
-            ];
-            return $this->respond($response);
+            return $this->fail("les champs du formulaire sont obligatoires", 400);
         } else {
             $findEmail = $userModel->where('email', $data['email'])->first();
             if($findEmail) {
                 $password_correct = password_verify($data['password'], $findEmail['password']);
 
                 if(!$password_correct) {
-                    $response = [
-                        'status'=> 400,
-                        'message'=> [
-                            'error'=> "mot de passe incorrecte",
-                        ],
-                    ];
-                    return $this->respond($response);
+                    return $this->fail("mot de passe incorrecte", 400);
 
                 } else {
                     $response = [
@@ -156,13 +137,15 @@ class UserController extends ResourceController
                         'error'=> null,
                         'messages'=> [
                             'success'=> " connectee !"
-                        ]
+                        ],
+                        'data' => $findEmail
                     ];
 
                     return $this->respond($response);
                 }
+            } else {
+                return $this->failNotFound("cet email n'existe pas", 404);
             }
-            // return $this->respond($findEmail['password']);
         }
     }
     /**
